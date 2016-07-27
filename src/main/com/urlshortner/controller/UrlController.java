@@ -33,7 +33,7 @@ public class UrlController {
         JSONObject jsonObject = new JSONObject(inputJson);
         String urlToRegister = jsonObject.getString("url");
         Integer redirectType = jsonObject.getInt("redirectType");
-        return new ResponseEntity<>("{\"shortUrl\":\"" + "localhost:8080/" + urlService.registerUrl(user.get(), urlToRegister, redirectType) + "\"}", HttpStatus.valueOf(202));
+        return new ResponseEntity<>("{\"shortUrl\":\"" + "localhost:8080/sh/" + urlService.registerUrl(user.get(), urlToRegister, redirectType) + "\"}", HttpStatus.valueOf(202));
     }
 
     @RequestMapping(value = "/sh/{shortUrl}", method = RequestMethod.GET)
@@ -42,6 +42,7 @@ public class UrlController {
         urlService.registerRedirection(url);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI(url.fullUrl()));
+        httpHeaders.add("Cache-Control", "no-cache");
         return new ResponseEntity<>(httpHeaders, HttpStatus.valueOf(url.redirectType()));
     }
 
