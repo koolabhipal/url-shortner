@@ -4,6 +4,7 @@ import main.com.urlshortner.Application;
 import main.com.urlshortner.controller.UrlController;
 import main.com.urlshortner.service.UserService;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,14 +79,14 @@ public class UrlControllerTest {
                 .headers(headers)
                 .content("{\"url\":\"http://google.com\",\"redirectType\":\"301\"}"))
                 .andReturn();
-        String responseString = registerResult.getResponse().getContentAsString();
+        String shortUrl = new JSONObject(registerResult.getResponse().getContentAsString()).getString("shortUrl");
 
-        MvcResult redirectionResult = mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + responseString.substring(28).replace("\"", "").replace("}", ""))).andReturn();
+        MvcResult redirectionResult = mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + shortUrl.substring(18).replace("\"", "").replace("}", ""))).andReturn();
         Assert.assertEquals(redirectionResult.getResponse().getRedirectedUrl(), "http://google.com");
 
         // redirection hit 2 times more count expected 3
-        mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + responseString.substring(28).replace("\"", "").replace("}", ""))).andReturn();
-        mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + responseString.substring(28).replace("\"", "").replace("}", ""))).andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + shortUrl.substring(18).replace("\"", "").replace("}", ""))).andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/sh/" + shortUrl.substring(18).replace("\"", "").replace("}", ""))).andReturn();
 
 
         mockMvc.perform(MockMvcRequestBuilders.get("/statistic/" + userName)

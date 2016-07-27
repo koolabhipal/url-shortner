@@ -36,11 +36,7 @@ public class BaseControllerTest {
     public void testHelp () throws Exception{
         mockMvc.perform(get("/help"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Use /account for creating an account (POST data must contain 'accountId' in the request JSON)<br>" +
-                "Use /register for registering url's (POST data must contain 'url' and 'redirectType' in the request JSON). The request header must have the authentication header comprising of Basic auth (Basic 'base64Credentials')<br>"+
-                "Examples :-<br>"+
-                "curl -H \"Content-Type: application/json\" -X POST -d '{\"accountId\":\"sampleAccountId\"}' http://localhost:8080/account<br>"+
-                "curl -H \"Content-Type: application/json\" -H \"Authorization:Basic cG9wOmNvRGo5eg==\" -X POST -d '{\"url\":\"http://google.com\",\"redirectType\":\"301\"}' http://localhost:8080/register"));
+                .andExpect(content().string("Use /account for creating an account (POST data must contain 'accountId' in the request JSON)<br>Use /register for registering url's (POST data must contain 'url' in the request JSON). The request header must have the authentication header comprising of Basic auth (Basic 'base64Credentials')<br>Examples :-<br>curl -H \"Content-Type: application/json\" -X POST -d '{\"accountId\":\"sampleAccountId\"}' http://localhost:8080/account<br>curl -H \"Content-Type: application/json\" -H \"Authorization:Basic cG9wOmNvRGo5eg==\" -X POST -d '{\"url\":\"http://google.com\",\"redirectType\":\"301\"}' http://localhost:8080/register<br>Further more statistics of a specific user's url redirection can be obtained by using /statistic/{accountId}. The request header must have the authentication header comprising of Basic auth (Basic 'base64Credentials')<br>"));
     }
 
 }
